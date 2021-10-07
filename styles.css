@@ -1,0 +1,51 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.card {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 15px;
+  width: 50%;
+}
+
+.card > .select {
+  height: 100px;
+  width: 100%;
+}
+
+.card > .board {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  width: 80%;
+}
+
+.board > .tile {
+  grid-row: span 1;
+  grid-column: span 1;
+  aspect-ratio: 1;
+  border: 1px solid black;
+}
+
+​.tile > .middle-row {
+  border-top: 3px solid black;
+  border-bottom: 3px solid black;
+}
+
+.tile > .middle-col {
+  border-left: 3px solid black;
+  border-right: 3px solid black;
+}
+
+.card > .restart {
+  height: 100px;
+  width: 100%;
+}
