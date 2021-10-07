@@ -5,9 +5,28 @@ const Player = (name, char) => {
     return {name, char}
 }
 
-// TODO: Receive user input to determine player `name` and `char`
-const player1 = Player('User', 'X')
-const player2 = Player('Computer', 'O')
+const AI = (name, char, difficulty) => {
+    const makeSelection = (board) => {
+        let index = null
+        switch (difficulty) {
+            default:
+                index = easySelect(board)
+        }
+        return index
+    }
+    const easySelect = () => {
+        if (board.get().filter(s => s === ' ').length === 0) return -1
+        let index = 0
+        let selection = false
+        while (selection === false) {
+            index = Math.floor(Math.random() * 9)
+            selection = (board.get()[index] === ' ')
+        }
+        return index
+    } 
+    return {name, char, difficulty, makeSelection}
+}
+
 
 
 const board = (() => {
@@ -26,8 +45,6 @@ const board = (() => {
 
 // Controls player's turns, populating the board, and determines winner of game
 const controller = (() => {
-    // TODO: Control players turn
-
     const write = (player, index) => {
         // Verify within range of board's array
         if (index < 0 || index > 8) return false
@@ -56,8 +73,6 @@ const controller = (() => {
     return {write, show, isWinner}
 })()
 
-
-controller.write(player1, 0)
-controller.write(player1, 1)
-controller.write(player1, 2)
-controller.isWinner(player1)
+// TODO: Receive user input to determine player `name` and `char`
+const player = Player('Dave', 'X')
+const ai = AI('Hal', 'O', 'easy', board)
