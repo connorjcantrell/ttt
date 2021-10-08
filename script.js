@@ -1,6 +1,3 @@
-// TODO: displayController- Module Pattern
-
-
 const Player = (name, char) => {
     return {name, char}
 }
@@ -27,8 +24,7 @@ const AI = (name, char, difficulty) => {
     return {name, char, difficulty, makeSelection}
 }
 
-
-
+// Encapsulates state of the board 
 const board = (() => {
     let selections = Array.from(' '.repeat(9))
     const get = () => selections
@@ -73,6 +69,28 @@ const controller = (() => {
     return {write, show, isWinner}
 })()
 
+const UI = (() => {
+    const selectionDivs = document.querySelectorAll('.selection')
+    const display = () => {
+        selectionDivs.forEach((item, index) => {
+            item.innerHTML = `<p>${board.get()[index]}</p>`
+        })
+    }
+    return {display}
+})()
+
 // TODO: Receive user input to determine player `name` and `char`
 const player = Player('Dave', 'X')
-const ai = AI('Hal', 'O', 'easy', board)
+const ai = AI('Hal', 'O', 'easy')
+
+// Test
+controller.write(ai, ai.makeSelection(board))
+controller.write(player, ai.makeSelection(board))
+controller.write(ai, ai.makeSelection(board))
+controller.write(player, ai.makeSelection(board))
+controller.write(ai, ai.makeSelection(board))
+controller.write(player, ai.makeSelection(board))
+controller.write(ai, ai.makeSelection(board))
+controller.write(player, ai.makeSelection(board))
+controller.write(ai, ai.makeSelection(board))
+UI.display()
