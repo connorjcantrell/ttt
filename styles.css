@@ -35,13 +35,11 @@ body {
   box-sizing: border-box;
 }
 
-/* Not displaying */
 .middle-row {
   border-top: 1px solid black;
   border-bottom: 1px solid black;
 }
 
-/* Not displaying */
 .middle-col {
   border-left: 1px solid black;
   border-right: 1px solid black;
