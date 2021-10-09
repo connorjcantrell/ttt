@@ -33,14 +33,19 @@ body {
   grid-column: span 1;
   aspect-ratio: 1;
   box-sizing: border-box;
+  transition: background-color 150ms;
 }
 
-.middle-row {
+.selection:hover {
+  background-color: #f6f8fa;
+}
+
+.mid-row {
   border-top: 1px solid black;
   border-bottom: 1px solid black;
 }
 
-.middle-col {
+.mid-col {
   border-left: 1px solid black;
   border-right: 1px solid black;
 }
