@@ -1,29 +1,3 @@
-const Player = (name, char) => {
-    return {name, char}
-}
-
-const AI = (name, char, difficulty) => {
-    const makeSelection = (board) => {
-        let index = null
-        switch (difficulty) {
-            default:
-                index = easySelect(board)
-        }
-        return index
-    }
-    const easySelect = () => {
-        if (board.get().filter(s => s === ' ').length === 0) return -1
-        let index = 0
-        let selection = false
-        while (selection === false) {
-            index = Math.floor(Math.random() * 9)
-            selection = (board.get()[index] === ' ')
-        }
-        return index
-    } 
-    return {name, char, difficulty, makeSelection}
-}
-
 // Encapsulates state of the board 
 const board = (() => {
     let selections = Array.from(' '.repeat(9))
@@ -38,6 +12,32 @@ const board = (() => {
     }
     return {get, change}
 })()
+
+const Player = (name, char) => {
+    return {name, char}
+}
+
+const AI = (name, char, difficulty) => {
+    const choose = () => {
+        let index = null
+        switch (difficulty) {
+            default:
+                index = random()
+        }
+        return index
+    }
+const random = () => {
+        if (board.get().filter(s => s === ' ').length === 0) return -1
+        let index = 0
+        let selection = false
+        while (selection === false) {
+            index = Math.floor(Math.random() * 9)
+            selection = (board.get()[index] === ' ')
+        }
+        return index
+    } 
+    return {name, char, choose}
+}
 
 // Controls player's turns, populating the board, and determines winner of game
 const controller = (() => {
@@ -71,6 +71,29 @@ const controller = (() => {
 
 const UI = (() => {
     const selectionDivs = document.querySelectorAll('.selection')
+    selectionDivs.forEach(item => {
+        item.addEventListener('click', e => {
+            console.log(board.get())
+            if (controller.isWinner(player)) {
+                alert(`${player.name} has won, ${ai.name} has been defeated`)
+                return
+            }
+            if (controller.isWinner(ai)) {
+                alert(`${ai.name} has won, ${player.name} has been defeated`)
+                return
+            }
+            console.log('No winner')
+            // let valid = false
+            // while (!valid) {
+            //     valid = controller.write(player, e.target.id)
+            // }
+            while(!controller.write(player, e.target.id)) {
+                if (controller.isWinner()) break
+            }
+            controller.write(ai, ai.choose())
+            display()
+        })
+    })
     const display = () => {
         selectionDivs.forEach((item, index) => {
             item.innerHTML = `<p>${board.get()[index]}</p>`
@@ -84,13 +107,4 @@ const player = Player('Dave', 'X')
 const ai = AI('Hal', 'O', 'easy')
 
 // Test
-controller.write(ai, ai.makeSelection(board))
-controller.write(player, ai.makeSelection(board))
-controller.write(ai, ai.makeSelection(board))
-controller.write(player, ai.makeSelection(board))
-controller.write(ai, ai.makeSelection(board))
-controller.write(player, ai.makeSelection(board))
-controller.write(ai, ai.makeSelection(board))
-controller.write(player, ai.makeSelection(board))
-controller.write(ai, ai.makeSelection(board))
 UI.display()
