@@ -54,51 +54,48 @@ const controller = (() => {
         return board.get()
     }
 
-    const isWinner = (player) => {
+    const winner = (player) => {
         const char = player.char
-        if (board[0] === char && board[1] === char && board[2] === char) return true
-        if (board[0] === char && board[3] === char && board[6] === char) return true
-        if (board[0] === char && board[4] === char && board[8] === char) return true
-        if (board[1] === char && board[4] === char && board[7] === char) return true
-        if (board[2] === char && board[4] === char && board[6] === char) return true
-        if (board[2] === char && board[5] === char && board[7] === char) return true
-        if (board[3] === char && board[4] === char && board[5] === char) return true
-        if (board[6] === char && board[7] === char && board[8] === char) return true
+        const arr = board.get()
+        if (arr[0] === char && arr[1] === char && arr[2] === char) return true
+        if (arr[0] === char && arr[3] === char && arr[6] === char) return true
+        if (arr[0] === char && arr[4] === char && arr[8] === char) return true
+        if (arr[1] === char && arr[4] === char && arr[7] === char) return true
+        if (arr[2] === char && arr[4] === char && arr[6] === char) return true
+        if (arr[2] === char && arr[5] === char && arr[8] === char) return true
+        if (arr[3] === char && arr[4] === char && arr[5] === char) return true
+        if (arr[6] === char && arr[7] === char && arr[8] === char) return true
         return false
     }
-    return {write, show, isWinner}
+    return {write, show, winner}
 })()
 
 const UI = (() => {
     const selectionDivs = document.querySelectorAll('.selection')
     selectionDivs.forEach(item => {
         item.addEventListener('click', e => {
-            console.log(board.get())
-            if (controller.isWinner(player)) {
+            // End function if user makes an invalid selection
+            if (!controller.write(player, e.target.id)) return
+            if (controller.winner(player)) {
                 alert(`${player.name} has won, ${ai.name} has been defeated`)
                 return
-            }
-            if (controller.isWinner(ai)) {
+            }           
+            controller.write(ai, ai.choose())
+            if (controller.winner(ai)) {
                 alert(`${ai.name} has won, ${player.name} has been defeated`)
                 return
             }
-            console.log('No winner')
-            // let valid = false
-            // while (!valid) {
-            //     valid = controller.write(player, e.target.id)
-            // }
-            while(!controller.write(player, e.target.id)) {
-                if (controller.isWinner()) break
-            }
-            controller.write(ai, ai.choose())
             display()
         })
     })
     const display = () => {
+        // Check if unequal amount of selections in html and board array
+        if (selectionDivs.length !== board.get().length) return
         selectionDivs.forEach((item, index) => {
             item.innerHTML = `<p>${board.get()[index]}</p>`
         })
     }
+    display()
     return {display}
 })()
 
@@ -106,5 +103,3 @@ const UI = (() => {
 const player = Player('Dave', 'X')
 const ai = AI('Hal', 'O', 'easy')
 
-// Test
-UI.display()
