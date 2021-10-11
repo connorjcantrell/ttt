@@ -3,6 +3,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  background: #ffffff;
 }
 
 .card {
@@ -16,7 +17,46 @@ body {
   width: 50%;
 }
 
+@media only screen and (max-width: 500px) {
+  body {
+    min-width: 400px;
+  }
+
+  .card {
+    width: 80%;
+  }
+}
+
+select {
+  font-family: Geneva, Verdana, sans-serif;
+  padding: 0.3rem 1rem;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button {
+  font-family: Geneva, Verdana, sans-serif;
+  color: white;
+  padding: 0.3rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 250ms;
+}
+
+.start-btn {
+  background-color: rgb(42, 83, 196);
+}
+
+.start-btn:hover {
+  background-color: rgba(42, 83, 196, 0.8);
+}
 .card > .select {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   height: 100px;
   width: 100%;
 }
@@ -37,7 +77,7 @@ body {
 }
 
 .selection:hover {
-  background-color: #f6f8fa;
+  background-color: #d9e9fc;
 }
 
 .mid-row {
@@ -57,6 +97,17 @@ body {
 }
 
 .card > .restart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100px;
   width: 100%;
+}
+
+.restart-btn {
+  background-color: rgba(246, 87, 90, 1);
+}
+
+.restart-btn:hover {
+  background-color: rgba(246, 87, 90, 0.75);
 }
