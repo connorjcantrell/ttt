@@ -10,7 +10,10 @@ const board = (() => {
         selections[index] = char
         return true
     }
-    return {get, change}
+    const clear = () => {
+        selections = Array.from(' '.repeat(9))
+    }
+    return {get, change, clear}
 })()
 
 const Player = (name, char) => {
@@ -21,21 +24,27 @@ const AI = (name, char, difficulty) => {
     const choose = () => {
         let index = null
         switch (difficulty) {
+            case "hard":
+                index = minimax()
             default:
                 index = random()
         }
         return index
     }
-const random = () => {
-        if (board.get().filter(s => s === ' ').length === 0) return -1
-        let index = 0
-        let selection = false
-        while (selection === false) {
-            index = Math.floor(Math.random() * 9)
-            selection = (board.get()[index] === ' ')
-        }
-        return index
-    } 
+    const random = () => {
+            if (board.get().filter(s => s === ' ').length === 0) return -1
+            let index = 0
+            let selection = false
+            while (selection === false) {
+                index = Math.floor(Math.random() * 9)
+                selection = (board.get()[index] === ' ')
+            }
+            return index
+        } 
+
+    const minimax = () => {
+        console.log('minimax')
+    }
     return {name, char, choose}
 }
 
@@ -72,22 +81,29 @@ const controller = (() => {
 
 const UI = (() => {
     const selectionDivs = document.querySelectorAll('.selection')
-    selectionDivs.forEach(item => {
-        item.addEventListener('click', e => {
-            // End function if user makes an invalid selection
-            if (!controller.write(player, e.target.id)) return
-            if (controller.winner(player)) {
-                alert(`${player.name} has won, ${ai.name} has been defeated`)
-                return
-            }           
-            controller.write(ai, ai.choose())
-            if (controller.winner(ai)) {
-                alert(`${ai.name} has won, ${player.name} has been defeated`)
-                return
-            }
-            display()
+    const startBtn = document.querySelector('.start-btn')
+    const restartBtn = document.querySelector('.restart-btn')
+    const difficultyBtn = document.querySelector('.difficulty')
+
+    // TODO: Fix bug- Last selection does not display when a user wins the game
+    const start = (player, ai) => {
+        selectionDivs.forEach(item => {
+            item.addEventListener('click', e => {
+                // End function if user makes an invalid selection
+                if (!controller.write(player, e.target.id)) return
+                if (controller.winner(player)) {
+                    alert(`${player.name} has won, ${ai.name} has been defeated`)
+                    return
+                }           
+                controller.write(ai, ai.choose())
+                if (controller.winner(ai)) {
+                    alert(`${ai.name} has won, ${player.name} has been defeated`)
+                    return
+                }
+                display()
+            })
         })
-    })
+    }
     const display = () => {
         // Check if unequal amount of selections in html and board array
         if (selectionDivs.length !== board.get().length) return
@@ -95,11 +111,25 @@ const UI = (() => {
             item.innerHTML = `<p>${board.get()[index]}</p>`
         })
     }
-    display()
-    return {display}
+
+    startBtn.addEventListener('click', () => {
+        const player = Player('Player', 'X')
+        const difficulty = difficultyBtn.value
+        const ai = AI('Hal', 'O', difficulty)
+        start(player, ai)
+    })
+
+    restartBtn.addEventListener('click', () => {
+        board.clear()
+        const player = Player('Player', 'X')
+        const difficulty = difficultyBtn.value
+        const ai = AI('Hal', 'O', difficulty)
+        start(player, ai)
+        display()
+    }) 
 })()
 
-// TODO: Receive user input to determine player `name` and `char`
-const player = Player('Dave', 'X')
-const ai = AI('Hal', 'O', 'easy')
+// // TODO: Receive user input to determine player `name` and `char`
+// const player = Player('Dave', 'X')
+// const ai = AI('Hal', 'O', 'easy')
 

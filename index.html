@@ -12,7 +12,13 @@
         <h1>Tic Tac Toe</h1>
     </header>
     <div class="card">
-        <div class="select"></div>
+        <div class="select">
+            <select class="difficulty">
+                <option value="easy">Easy</option>
+                <option value="hard">Hard</option>
+            </select>
+            <button class="start-btn">Start</button>
+        </div>
         <div class="board">
             <div id="0" class="selection"></div>
             <div id="1" class="selection mid-col"></div>
@@ -24,7 +30,9 @@
             <div id="7" class="selection mid-col"></div>
             <div id="8" class="selection"></div>
         </div>
-        <div class="restart"></div>
+        <div class="restart">
+            <button class="restart-btn">Restart</button>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
